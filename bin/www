@@ -29,7 +29,7 @@ var log = log4js.getLogger("startup");
  */
 
 var app = require('../app');
-var debug = require('debug')('express-mvc-auth:server');
+var debug = require('debug')('express-auth-seed:server');
 var http = require('http');
 
 /**
