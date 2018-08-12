@@ -10,11 +10,18 @@ var cors = require('cors');
 var helmet = require('helmet');
 var admin = require('sriracha');
 var log4js = require('log4js');
+var session = require('express-session');
+var passport = require('passport');
+var mongoose = require('mongoose');
+
+var webconfig = require('./config/web.config');
+var auth = require('./auth/auth-strategy');
 
 var logger = log4js.getLogger('app');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var authRouter = require('./routes/auth');
 
 // create express app
 var app = express();
@@ -29,9 +36,19 @@ app.use(cookieParser());
 app.use('/admin', admin());
 app.use(favicon());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({ secret: webconfig.SECRET }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+// connect to the database
+mongoose.connect(webconfig.CONNECTION_STRING);
+
+// configure auth
+auth.configure(webconfig);
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/auth', authRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
