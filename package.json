@@ -1,0 +1,24 @@
+{
+    "name": "express-mvc-auth",
+    "version": "0.0.0",
+    "private": true,
+    "scripts": {
+        "start": "node ./bin/www"
+    },
+    "dependencies": {
+        "cookie-parser": "~1.4.3",
+        "cors": "^2.8.4",
+        "csurf": "^1.9.0",
+        "debug": "~2.6.9",
+        "express": "~4.16.0",
+        "helmet": "^3.13.0",
+        "http-errors": "~1.6.2",
+        "log4js": "^3.0.4",
+        "passport": "^0.4.0",
+        "sriracha": "^1.0.0",
+        "static-favicon": "^2.0.0-alpha"
+    },
+    "devDependencies": {
+        "apidoc": "^0.17.6"
+    }
+}
