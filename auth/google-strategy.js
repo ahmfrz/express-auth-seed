@@ -1,9 +1,6 @@
-var logger = require('log4js').getLogger('auth-google');
 var passport = require('passport');
+var authHelper = require('./auth-helper');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-var jwt = require('jsonwebtoken');
-var User = require('../models/user.model');
-var Membership = require('../models/membership.model');
 
 module.exports.configure = function(config) {
     // Use the GoogleStrategy within Passport.
@@ -13,12 +10,10 @@ module.exports.configure = function(config) {
     passport.use(new GoogleStrategy({
             clientID: config.GOOGLE_CLIENT_ID,
             clientSecret: config.GOOGLE_CLIENT_SECRET,
-            callbackURL: "http://localhost:3000/auth/google/callback"
+            callbackURL: config.BASE_URL + "/auth/google/callback"
         },
         function(accessToken, refreshToken, profile, done) {
-            User.findOrCreate({ googleId: profile.id }, function(err, user) {
-                return done(err, user);
-            });
+            authHelper.updateMembership(accessToken, refreshToken, profile, done);
         }
     ));
 }
