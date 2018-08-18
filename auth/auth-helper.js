@@ -3,7 +3,7 @@ var jwt = require('jsonwebtoken');
 var User = require('../models/user.model');
 var Membership = require('../models/membership.model');
 
-module.exports.updateMembership = function(accessToken, refreshToken, profile, done) {
+module.exports.updateMembership = function(accessToken, refreshToken, profile, done, config) {
     Membership.findOne({ providerUserId: profile.id }, function(err, membership) {
         if (err) {
             logger.error("Could not find membership for ", profile.id, "error ", err);

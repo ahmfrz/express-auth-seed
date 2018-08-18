@@ -13,7 +13,7 @@ module.exports.configure = function(config) {
             callbackURL: config.BASE_URL + "/auth/google/callback"
         },
         function(accessToken, refreshToken, profile, done) {
-            authHelper.updateMembership(accessToken, refreshToken, profile, done);
+            authHelper.updateMembership(accessToken, refreshToken, profile, done, config);
         }
     ));
 }
