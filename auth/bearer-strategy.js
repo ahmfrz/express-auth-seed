@@ -1,17 +1,16 @@
 var logger = require('log4js').getLogger('auth-bearer');
 var passport = require('passport');
 var BearerStrategy = require('passport-http-bearer').Strategy;
-var jwt = require('jsonwebtoken');
+var helper = require('./auth-helper');
 var User = require('../models/user.model');
 
 module.exports.configure = function(config) {
     passport.use(new BearerStrategy((token, done) => {
         try {
-            const user = jwt.verify(token, config.SECRET);
+            const user = helper.verifyToken(token, config.SECRET);
             User.findOne({ username: user.username }, function(err, userParam) {
                 if (err) {
-                    logger.error("Error occurred", err);
-                    return done(err);
+                    throw err;
                 }
 
                 if (!userParam) {
@@ -19,10 +18,11 @@ module.exports.configure = function(config) {
                     return done(null, false);
                 }
 
-                return done(null, userParam.username);
+                return done(null, true);
             });
         } catch (error) {
-            return done(null, false);
+            logger.error("Exception occurred in bearer strategy", err);
+            return done(err);
         }
     }));
 }

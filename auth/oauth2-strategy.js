@@ -1,7 +1,6 @@
 var logger = require('log4js').getLogger('auth-oauth2');
 var passport = require('passport');
 var OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
-var jwt = require('jsonwebtoken');
 var User = require('../models/user.model');
 
 module.exports.configure = function(config) {

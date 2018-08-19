@@ -1,11 +1,15 @@
-var express = require('express');
-var router = express.Router();
 var passport = require('passport');
+var express = require('express');
+var signupController = require('../api-controllers/account-controller/signup.controller');
+
+var router = express.Router();
 
 router.get('/api/test',
     passport.authenticate('bearer', { session: false }),
     function(req, res) {
-        res.json(req.user);
+        res.json({
+            token: req.user
+        });
     });
 
 router.post(
@@ -13,9 +17,14 @@ router.post(
     passport.authenticate('local', { session: false }),
     function(req, res) {
         res.json({
-            token: req
+            token: req.token
         });
     }
+);
+
+router.post(
+    '/signup',
+    signupController.post
 );
 
 // Redirect the user to the OAuth 2.0 provider for authentication.  When
