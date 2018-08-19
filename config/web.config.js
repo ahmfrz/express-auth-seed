@@ -8,5 +8,5 @@ module.exports = {
     FACEBOOK_APP_SECRET: 'def',
     GOOGLE_CLIENT_ID: 'abc',
     GOOGLE_CLIENT_SECRET: 'def',
-    CONNECTION_STRING: 'mongo'
+    CONNECTION_STRING: 'mongodb://localhost:27017/test'
 }

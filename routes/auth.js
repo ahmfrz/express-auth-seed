@@ -3,17 +3,17 @@ var router = express.Router();
 var passport = require('passport');
 
 router.get('/api/test',
-    passport.authenticate('bearer', { session: false }),
+    passport.authenticate('bearer', { session: false, failureFlash: true }),
     function(req, res) {
         res.json(req.user);
     });
 
 router.post(
     '/login',
-    passport.authenticate('local', { session: false }),
+    passport.authenticate('local', { session: false, failureFlash: true }),
     function(req, res) {
         res.json({
-            token: req.user
+            token: req
         });
     }
 );
@@ -21,7 +21,7 @@ router.post(
 // Redirect the user to the OAuth 2.0 provider for authentication.  When
 // complete, the provider will redirect the user back to the application at
 //     /auth/provider/callback
-router.get('/provider', passport.authenticate('provider', { scope: 'email' }));
+router.get('/provider', passport.authenticate('provider', { scope: 'email', failureFlash: true }));
 
 // The OAuth 2.0 provider has redirected the user back to the application.
 // Finish the authentication process by attempting to obtain an access
@@ -30,12 +30,13 @@ router.get('/provider', passport.authenticate('provider', { scope: 'email' }));
 router.get('/provider/callback',
     passport.authenticate('provider', {
         successRedirect: '/',
-        failureRedirect: '/login'
+        failureRedirect: '/login',
+        failureFlash: true
     }));
 
 // Redirect the user to Facebook for authentication.  When complete,
 // Facebook will redirect the user back to the application at
-router.get('/facebook', passport.authenticate('facebook', { session: false }));
+router.get('/facebook', passport.authenticate('facebook', { session: false, failureFlash: true }));
 
 // Facebook will redirect the user to this URL after approval.  Finish the
 // authentication process by attempting to obtain an access token.  If
@@ -45,7 +46,8 @@ router.get('/facebook/callback',
     passport.authenticate('facebook', {
         successReturnToOrRedirect: '/',
         failureRedirect: '/auth/setup/',
-        session: false
+        session: false,
+        failureFlash: true
     })
 );
 
@@ -57,7 +59,8 @@ router.get('/facebook/callback',
 router.get('/google',
     passport.authenticate('google', {
         scope: ['profile'],
-        session: false
+        session: false,
+        failureFlash: true
     }));
 
 // GET /auth/google/callback
@@ -69,7 +72,8 @@ router.get('/google/callback',
     passport.authenticate('google', {
         successReturnToOrRedirect: '/',
         failureRedirect: '/auth/setup/',
-        session: false
+        session: false,
+        failureFlash: true
     }));
 
 module.exports = router;
